@@ -79,6 +79,18 @@ describe('#credentials', () => {
       });
     }));
 
+  it('should resolve env credentials with AWS STS session token', () =>
+    overrideEnv(() => {
+      process.env.AWS_ACCESS_KEY_ID = 'foo';
+      process.env.AWS_SECRET_ACCESS_KEY = 'bar';
+      process.env.AWS_SESSION_TOKEN = 'baz';
+      expect(credentials.resolveEnvCredentials()).to.deep.equal({
+        accessKeyId: 'foo',
+        secretAccessKey: 'bar',
+        sessionToken: 'baz',
+      });
+    }));
+
   it('should save file profiles', () => {
     const profiles = new Map([
       [
